@@ -1,0 +1,3 @@
+[submodule "external/boost-math"]
+	path = external/boost-math
+	url = https://github.com/boostorg/math.git
