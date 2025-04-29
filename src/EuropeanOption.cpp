@@ -1,6 +1,7 @@
 // EuropeanOption.cpp
 #include "EuropeanOption.hpp"
 #include <iomanip>
+#include <cmath>
 
 //////////// Price Functions /////////////////////////////////
 double EuropeanOption::CallPrice() const //Call Price
