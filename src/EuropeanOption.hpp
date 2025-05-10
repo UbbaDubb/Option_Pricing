@@ -5,7 +5,8 @@
 #include "Option.hpp"
 #include <cmath>
 
-class EuropeanOption : public Option {
+class EuropeanOption : public Option 
+{
 private:
     // European option specific methods
     double CallPrice() const;
@@ -46,7 +47,9 @@ public:
     virtual double Delta() const override;
     virtual double Delta(double v, std::string var) const override;
     virtual double Theta() const override;
+    virtual double Theta(double v, std::string var) const override;
     virtual double Gamma() const override;
+    virtual double Gamma(double v, std::string var) const override;
     virtual double Vega() const override;
     virtual double Vega(double v, std::string var) const override;
     virtual double Rho() const override;

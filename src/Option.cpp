@@ -23,7 +23,7 @@ double Option::N(double x) const //Standard Normal CDF
 }
 
 // Default Constructor
-Option::Option() : r(0), sig(0), K(0), T(0), S(0), q(0), optType("C")  {};
+Option::Option() : r(0.0), sig(0.0), K(0.0), T(0.0), S(0.0), q(0.0), optType("C")  {};
 
 // Constructor by input
 Option::Option(double r, double sig, double K, double T, double S, double q, std::string optType) : r(r), sig(sig), K(K), T(T), S(S), q(q), optType(optType){};
