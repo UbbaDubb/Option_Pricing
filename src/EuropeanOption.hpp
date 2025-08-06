@@ -5,7 +5,8 @@
 #include "Option.hpp"
 #include <cmath>
 
-class EuropeanOption : public Option {
+class EuropeanOption : public Option
+{
 private:
     // European option specific methods
     double CallPrice() const;

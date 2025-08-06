@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(OptionPricing)
+project(Option_Pricing)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -20,8 +20,8 @@ set(SOURCES
 )
 
 # Create executable
-add_executable(OptionPricing ${SOURCES})
+add_executable(Option_Pricing ${SOURCES})
 
 # Link Boost
-target_include_directories(OptionPricing PRIVATE external/boost-math/include)
-target_link_libraries(OptionPricing PRIVATE Boost::math)
+target_include_directories(Option_Pricing PRIVATE external/boost-math/include)
+target_link_libraries(Option_Pricing PRIVATE Boost::math)

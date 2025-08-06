@@ -269,8 +269,8 @@ int main() {
     std::vector<RatePoint> result3 = { RatePoint(0.0, 0.05) };  // Overnight rate
     bootstrapZeroRate(initialR, face, cpnFreq, result3, bonds3, offset);
 
-    EuropeanOption opt(0.1, 0.36, 100, 0.5, 105, 0, "C");
-	opt.info();
+    //EuropeanOption opt(0.1, 0.36, 100, 0.5, 105, 0, "C");
+	//opt.info();
 
 
 
