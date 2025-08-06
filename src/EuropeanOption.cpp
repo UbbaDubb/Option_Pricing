@@ -1,7 +1,6 @@
 // EuropeanOption.cpp
 #include "EuropeanOption.hpp"
 #include <iomanip>
-#include <cmath>
 
 //////////// Price Functions /////////////////////////////////
 double EuropeanOption::CallPrice() const //Call Price
@@ -608,9 +607,22 @@ double EuropeanOption::Theta() const
 		return PutTheta();
 }
 
+double EuropeanOption::Theta(double v, std::string var) const
+{
+	if (optType == "C")
+		return CallTheta(v, var);
+	else
+		return PutTheta(v, var);
+}
+
 double EuropeanOption::Gamma() const
 {
 	return OptionGamma();
+}
+
+double EuropeanOption::Gamma(double v, std::string var) const
+{
+	return OptionGamma(v, var);
 }
 
 double EuropeanOption::Vega() const
@@ -693,7 +705,6 @@ std::vector<double> EuropeanOption::impliedVol(double price, double x0, double t
 	{
 		for (int i = 0; i < max_iters; i++)
 		{
-			std::cout << "X0: " << sig_prev << std::endl;
 			double tmp = sig_prev * sqrt(T);
 			double d1 = (log(S / K) + (r - q + (sig_prev * sig_prev) * 0.5) * T) / tmp;
 			double d2 = d1 - tmp;
