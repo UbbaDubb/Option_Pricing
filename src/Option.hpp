@@ -31,6 +31,8 @@ public:
     Option(const Option& option);
     virtual ~Option() = 0;  // Pure virtual destructor makes this an abstract class
 
+	virtual Option* clone() const = 0; // Pure virtual clone method for polymorphic copying
+
     // Assignment operator
     Option& operator=(const Option& option);
 
@@ -50,19 +52,19 @@ public:
 
     // Accessor/modifier methods for parameters
     void rf_rate(double r_in);
-    const double rf_rate();
+    double rf_rate() const;
     void sigma(double sig_in);
-    const double sigma();
+    double sigma() const;
     void strike(double K_in);
-    const double strike();
+    double strike() const;
     void time(double T_in);
-    const double time();
+    double time() const;
     void spot(double S_in);
-    const double spot();
+    double spot() const;
     void dividends(double q_in);
-    const double dividends();
+    double dividends() const;
     void type(std::string type);
-    const std::string type();
+    std::string type() const;
 
     // Toggle between Call and Put
     void toggle();

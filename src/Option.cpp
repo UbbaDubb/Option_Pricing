@@ -54,19 +54,19 @@ Option::~Option() {}
 
 // Getter/Setter functions
 void Option::rf_rate(double r_in) {r = r_in;}
-const double Option::rf_rate()	{return r;}
+double Option::rf_rate() const {return r;}
 void Option::sigma(double sig_in) { sig = sig_in; }
-const double Option::sigma() {return sig;}
+double Option::sigma() const {return sig;}
 void Option::strike(double K_in) { K = K_in; }
-const double Option::strike() { return K; }
+double Option::strike() const { return K; }
 void Option::time(double T_in) { T = T_in; }
-const double Option::time() { return T; }
+double Option::time() const { return T; }
 void Option::spot(double S_in) { S = S_in; }
-const double Option::spot() { return S; }
+double Option::spot() const { return S; }
 void Option::dividends(double q_in) { q = q_in; } // double q = 0.0; Dividend yield...Option.b = indexOption.r - q;
-const double Option::dividends() { return q; }
+double Option::dividends() const { return q; }
 void Option::type(std::string type) { optType = type; }
-const std::string Option::type() { return optType; }
+std::string Option::type() const { return optType; }
 
 
 // Modifier function

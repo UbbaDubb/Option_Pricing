@@ -17,10 +17,10 @@ set(SOURCES
     src/Option.cpp
     src/EuropeanOption.cpp
     src/main.cpp
-)
+ "src/MeshParameterGenerator.cpp")
 
 # Create executable
-add_executable(Option_Pricing ${SOURCES})
+add_executable(Option_Pricing ${SOURCES} "src/MatrixPricer.cpp")
 
 # Link Boost
 target_include_directories(Option_Pricing PRIVATE external/boost-math/include)

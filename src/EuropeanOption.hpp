@@ -40,6 +40,9 @@ public:
     // Assignment operator
     EuropeanOption& operator=(const EuropeanOption& option);
 
+	// Clone method for polymorphic copying
+    virtual EuropeanOption* clone() const override;
+
     // Implementation of pure virtual methods
     virtual double Price() const override;
     virtual double Price(double v, std::string var) const override;

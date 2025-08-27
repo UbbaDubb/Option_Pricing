@@ -561,6 +561,12 @@ EuropeanOption& EuropeanOption::operator=(const EuropeanOption& option)
 	return *this;
 }
 
+// Clone method
+EuropeanOption* EuropeanOption::clone() const
+{
+	return new EuropeanOption(*this);
+}
+
 //////////// Pure Virtual Methods /////////////////////////////////
 
 double EuropeanOption::Price() const

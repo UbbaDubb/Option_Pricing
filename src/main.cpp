@@ -4,6 +4,43 @@
 #include "Option.hpp"
 #include "EuropeanOption.hpp"
 #include <functional>
+#include <iomanip>
+#include "MeshParameterGenerator.hpp"
+#include "MatrixPricer.hpp"
+
+void printPricerResults(const std::vector<std::vector<double>>& results)
+{
+    std::cout << "\nParameter Matrix with Results:\n";
+    std::cout
+        << std::setw(3) << "Row" << " | "
+        << std::setw(7) << "r" << " | "
+        << std::setw(7) << "sigma" << " | "
+        << std::setw(7) << "K" << " | "
+        << std::setw(7) << "T" << " | "
+        << std::setw(7) << "S" << " | "
+        << std::setw(7) << "q" << " | "
+        << std::setw(7) << "Call" << " | "
+        << std::setw(7) << "Put" << " | "
+        << std::setw(7) << "Delta_C" << " | "
+        << std::setw(7) << "Delta_P" << " | "
+        << std::setw(7) << "Gamma" << " | "
+        << std::setw(7) << "Vega" << " | "
+        << std::setw(7) << "Theta_C" << " | "
+        << std::setw(7) << "Theta_P" << " | "
+        << std::setw(7) << "Rho_C" << " | "
+        << std::setw(7) << "Rho_P" << " |\n";
+
+    std::cout << std::string(6 + 17 * 9, '-') << "\n"; // separator line
+
+    for (size_t i = 0; i < results.size(); i++)
+    {
+        std::cout << std::setw(3) << (i + 1) << " | ";
+        for (double val : results[i]) {
+            std::cout << std::setw(7) << std::fixed << std::setprecision(2) << val << " | ";
+        }
+        std::cout << "\n";
+    }
+}
 
 
 int main()
@@ -50,10 +87,37 @@ int main()
         std::cout << std::fixed << "\n";
     }
 
+	EuropeanOption opt2 = EuropeanOption(0.03, 0.25, 50, 0.5, 50, 0, "C");
+
+    std::cout << "\nEuropean Option Price: \n";
+    opt2.info();
+
+	std::cout << "\n\nMesh Parameter Generator Example:" << std::endl;
+	MeshParameterGenerator mpg(opt2, "sig", 0.1, 0.5, 0.05);
+
+	std::vector<std::vector<double>> parameters = mpg.generateParameters();
+
+	// Create MatrixPricer with generated parameters
+	MatrixPricer pricer;
+	pricer.setParameters(parameters);
+	pricer.printParameters();
+	EuropeanOption opt_temp = EuropeanOption();
+
+	std::vector<double> prices = pricer.priceOptions(opt_temp);
+
+	std::cout << "\nComputed European Option Prices:" << std::endl;
+    for (size_t i = 0; i < prices.size(); i++)
+    {
+		std::cout << "Option " << (i + 1) << ": Price = " << std::fixed << std::setprecision(4) << prices[i] << std::endl;
+    }
+
+	std::vector<std::vector<double>> results = pricer.priceOptionsExtended(opt_temp);
+	printPricerResults(results);
+
     return 0;
 }
 
-
+/*
     // Example 1
     std::cout << "Example 1: 1yr, 1.5yr, 3yr bonds" << std::endl;
     std::vector<Bond> bonds1 = {
@@ -105,3 +169,5 @@ int main()
 
     return 0;
 }
+
+*/
