@@ -7,6 +7,7 @@
 #include <iomanip>
 #include "MeshParameterGenerator.hpp"
 #include "MatrixPricer.hpp"
+#include <fstream>
 
 void printPricerResults(const std::vector<std::vector<double>>& results)
 {
@@ -42,6 +43,31 @@ void printPricerResults(const std::vector<std::vector<double>>& results)
     }
 }
 
+void saveResultsToCSV(const std::string& filename,
+    const std::vector<std::vector<double>>& results)
+{
+    std::ofstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << filename << std::endl;
+        return;
+    }
+
+    // Write header row
+    file << "r,sig,K,T,S,q,Call,Put,Delta(Call),Delta(Put),Gamma,Vega,Theta(Call),Theta(Put),Rho(Call),Rho(Put)\n";
+
+    // Write each row
+    for (const auto& row : results) {
+        for (size_t i = 0; i < row.size(); ++i) {
+            file << row[i];
+            if (i != row.size() - 1) file << ","; // comma-separated
+        }
+        file << "\n";
+    }
+
+    file.close();
+    std::cout << "Results successfully saved to " << filename << std::endl;
+}
 
 int main()
 {
@@ -111,8 +137,10 @@ int main()
 		std::cout << "Option " << (i + 1) << ": Price = " << std::fixed << std::setprecision(4) << prices[i] << std::endl;
     }
 
-	std::vector<std::vector<double>> results = pricer.priceOptionsExtended(opt_temp);
-	printPricerResults(results);
+	//std::vector<std::vector<double>> results = pricer.priceOptionsExtended(opt_temp);
+	//printPricerResults(results);
+
+    saveResultsToCSV("option_results.csv", pricer.priceOptionsExtended(opt_temp));
 
     return 0;
 }
