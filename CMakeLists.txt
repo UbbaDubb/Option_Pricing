@@ -6,11 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(FetchContent)
 
-# Fetch Boost.Math only
+# Fetch Boost.Math as a ZIP archive (no git required)
 FetchContent_Declare(
   boost_math
-  GIT_REPOSITORY https://github.com/boostorg/math.git
-  GIT_TAG boost-1.86.0   # choose a stable release tag
+  URL https://github.com/boostorg/math/archive/refs/tags/boost-1.86.0.zip
 )
 
 FetchContent_MakeAvailable(boost_math)
