@@ -5,7 +5,7 @@
 // Default Constructor
 ConsoleParameterGenerator::ConsoleParameterGenerator() : r(0.0), sig(0.0), K(0.0), T(0.0), S(0.0), q(0.0), var(""), start(0.0), end(0.0), step(0.0) {};
 
-// Constructor by Option Onput
+// Constructor by Option Input
 ConsoleParameterGenerator::ConsoleParameterGenerator(const Option& option, const std::string& var_in, double start_in, double end_in, double step_in) 
 	: r(option.rf_rate()), sig(option.sigma()), K(option.strike()), T(option.time()), S(option.spot()), q(option.dividends()), var(var_in), start(start_in), end(end_in), step(step_in) {};
 
