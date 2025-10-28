@@ -27,6 +27,7 @@ set(SOURCES
     src/main.cpp
     src/MeshParameterGenerator.cpp
     src/MatrixPricer.cpp
+    src/ConsoleParameterGenerator.cpp
 )
 
 # Executable

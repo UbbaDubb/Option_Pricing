@@ -6,6 +6,7 @@
 #include <functional>
 #include <iomanip>
 #include "MeshParameterGenerator.hpp"
+#include "ConsoleParameterGenerator.hpp"
 #include "MatrixPricer.hpp"
 #include <fstream>
 
@@ -136,6 +137,31 @@ int main()
     {
 		std::cout << "Option " << (i + 1) << ": Price = " << std::fixed << std::setprecision(4) << prices[i] << std::endl;
     }
+
+    // Create ConsoleParamGenerator with input parameters
+    
+    ConsoleParameterGenerator consoleGen;
+    consoleGen.initialise();
+    
+    std::vector<std::vector<double>> consoleparameters = consoleGen.generateParameters();
+
+    MatrixPricer consolepricer;
+    consolepricer.setParameters(consoleparameters);
+
+    std::cout << "\nGenerated Parameters:\n";
+    consolepricer.printParameters();
+
+    EuropeanOption opt_consolegen;
+    std::vector<double> consoleprices = consolepricer.priceOptions(opt_consolegen);
+
+    std::cout << "\nComputed European Option Prices:\n";
+    for (size_t i = 0; i < consoleprices.size(); i++)
+    {
+        std::cout << "Option " << (i + 1)
+            << ": Price = " << std::fixed << std::setprecision(4)
+            << consoleprices[i] << std::endl;
+    }
+    
 
 	//std::vector<std::vector<double>> results = pricer.priceOptionsExtended(opt_temp);
 	//printPricerResults(results);

@@ -3,93 +3,82 @@
 #include "ConsoleParameterGenerator.hpp"
 
 // Default Constructor
-ConsoleParameterGenerator::ConsoleParameterGenerator() : r(0.0), sig(0.0), K(0.0), T(0.0), S(0.0), q(0.0), var(""), start(0.0), end(0.0), step(0.0) {};
-
-// Constructor by Option Input
-ConsoleParameterGenerator::ConsoleParameterGenerator(const Option& option, const std::string& var_in, double start_in, double end_in, double step_in) 
-	: r(option.rf_rate()), sig(option.sigma()), K(option.strike()), T(option.time()), S(option.spot()), q(option.dividends()), var(var_in), start(start_in), end(end_in), step(step_in) {};
+ConsoleParameterGenerator::ConsoleParameterGenerator() : r(0.0), sig(0.0), K(0.0), T(0.0), S(0.0), q(0.0), useMesh(false), var(""), start(0.0), end(0.0), step(0.0) {};
 
 // Copy Constructor
-ConsoleParameterGenerator::ConsoleParameterGenerator(const ConsoleParameterGenerator& mpg) 
-	: r(mpg.r), sig(mpg.sig), K(mpg.K), T(mpg.T), S(mpg.S), q(mpg.q), var(mpg.var), start(mpg.start), end(mpg.end), step(mpg.step) {};
+ConsoleParameterGenerator::ConsoleParameterGenerator(const ConsoleParameterGenerator& cpg) 
+	: r(cpg.r), sig(cpg.sig), K(cpg.K), T(cpg.T), S(cpg.S), q(cpg.q), var(cpg.var), start(cpg.start), end(cpg.end), step(cpg.step) {};
 
 // Destructor
 ConsoleParameterGenerator::~ConsoleParameterGenerator() {};
 
 // Assignment Operator
-ConsoleParameterGenerator& ConsoleParameterGenerator::operator=(const ConsoleParameterGenerator& mpg)
+ConsoleParameterGenerator& ConsoleParameterGenerator::operator=(const ConsoleParameterGenerator& cpg)
 {
-	if (this == &mpg)
+	if (this == &cpg)
 		return *this;
 
-	r = mpg.r;
-	sig = mpg.sig;
-	K = mpg.K;
-	T = mpg.T;
-	S = mpg.S;
-	q = mpg.q;
-	var = mpg.var;
-	start = mpg.start;
-	end = mpg.end;
-	step = mpg.step;
+	r = cpg.r;
+	sig = cpg.sig;
+	K = cpg.K;
+	T = cpg.T;
+	S = cpg.S;
+	q = cpg.q;
+	var = cpg.var;
+	start = cpg.start;
+	end = cpg.end;
+	step = cpg.step;
 
 	return *this;
 };
 
-// Getter/Setter functions
-void ConsoleParameterGenerator::rf_rate(double r_in) { r = r_in; }
-double ConsoleParameterGenerator::rf_rate() const { return r; }
-void ConsoleParameterGenerator::sigma(double sig_in) { sig = sig_in; }
-double ConsoleParameterGenerator::sigma() const { return sig; }
-void ConsoleParameterGenerator::strike(double K_in) { K = K_in; }
-double ConsoleParameterGenerator::strike() const { return K; }
-void ConsoleParameterGenerator::time(double T_in) { T = T_in; }
-double ConsoleParameterGenerator::time() const { return T; }
-void ConsoleParameterGenerator::spot(double S_in) { S = S_in; }
-double ConsoleParameterGenerator::spot() const { return S; }
-void ConsoleParameterGenerator::dividends(double q_in) { q = q_in; } // double q = 0.0; Dividend yield...ConsoleParameterGenerator.b = indexConsoleParameterGenerator.r - q;
-double ConsoleParameterGenerator::dividends() const { return q; }
-void ConsoleParameterGenerator::variable(const std::string& var_in) { var = var_in; }
-std::string ConsoleParameterGenerator::variable() const { return var; }
-void ConsoleParameterGenerator::console_start(double start_in) { start = start_in; }
-double ConsoleParameterGenerator::console_start() const { return start; }
-void ConsoleParameterGenerator::console_end(double end_in) { end = end_in; }
-double ConsoleParameterGenerator::console_end() const { return end; }
-void ConsoleParameterGenerator::console_step(double step_in) { step = step_in; }
-double ConsoleParameterGenerator::console_step() const { return step; }
 
-// Parameter Generator for Console
+// Ask user for input
+void ConsoleParameterGenerator::initialise()
+{
+	char meshChoice;
+	std::cout << "Would you like to generate a mesh? (y/n): ";
+	std::cin >> meshChoice;
+	useMesh = (tolower(meshChoice) == 'y');
+
+	std::cout << "Enter risk-free rate (r): ";
+	std::cin >> r;
+	std::cout << "Enter volatility (sig): ";
+	std::cin >> sig;
+	std::cout << "Enter strike price (K): ";
+	std::cin >> K;
+	std::cout << "Enter time to maturity (T): ";
+	std::cin >> T;
+	std::cout << "Enter current underlying price (S): ";
+	std::cin >> S;
+	std::cout << "Enter dividend yield (q): ";
+	std::cin >> q;
+
+	if (useMesh)
+	{
+		std::cout << "Which parameter to vary (r, sig, K, T, S, q): ";
+		std::cin >> var;
+		std::cout << "Enter mesh start: ";
+		std::cin >> start;
+		std::cout << "Enter mesh end: ";
+		std::cin >> end;
+		std::cout << "Enter mesh step: ";
+		std::cin >> step;
+	}
+}
+
+// Generate parameters based on user setup
 std::vector<std::vector<double>> ConsoleParameterGenerator::generateParameters()
 {
-	std::vector<std::vector<double>> matrix; // Matrix to hold the parameters
-	
-	std::vector<double> Console;	// Vector to hold the Console values
-
-	for (double i = start; i <= end; i += step)
+	if (useMesh)
 	{
-		Console.push_back(i);
+		MeshParameterGenerator meshGen(r, sig, K, T, S, q, var, start, end, step);
+		return meshGen.generateParameters();
 	}
-	
-	// Check which column to vary
-	int col = -1;
-	if (var == "r") col = 0;
-	else if (var == "sig") col = 1;
-	else if (var == "K") col = 2;
-	else if (var == "T") col = 3;
-	else if (var == "S") col = 4;
-	else if (var == "q") col = 5;
-
-	// Generate matrix
-
-	for (double val : Console)
+	else
 	{
-		std::vector<double> row = { r, sig, K, T, S, q };
-		if (col != -1)
-		{
-			row[col] = val; // Varying parameter
-		}
-		matrix.push_back(row); // Add the row to the matrix
+		// Single row of parameters
+		std::vector<std::vector<double>> params = { {r, sig, K, T, S, q} };
+		return params;
 	}
-
-	return matrix;
 }
