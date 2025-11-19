@@ -6,6 +6,7 @@
 #include <functional>
 #include <iomanip>
 #include "MeshParameterGenerator.hpp"
+#include "ConsoleParameterGenerator.hpp"
 #include "MatrixPricer.hpp"
 #include <fstream>
 
