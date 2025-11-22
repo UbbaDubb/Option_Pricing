@@ -143,6 +143,16 @@ int main()
 
     saveResultsToCSV("option_results.csv", pricer.priceOptionsExtended(opt_temp));
 
+    // Short Reverse Risk_Reversal
+
+	EuropeanOption rr_call = EuropeanOption(0.05, 0.4, 105, 10, 100, 0, "C");
+
+	EuropeanOption rr_put = EuropeanOption(0.05, 0.4, 95, 10, 100, 0, "P");
+
+	double short_rr = -rr_call.Price() + rr_put.Price();
+
+	std::cout << "\n\nShort Reverse Risk Reversal Price: " << std::fixed << std::setprecision(4) << short_rr << std::endl;
+
     return 0;
 }
 
